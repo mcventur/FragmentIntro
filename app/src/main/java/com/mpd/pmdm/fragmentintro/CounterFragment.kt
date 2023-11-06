@@ -1,40 +1,43 @@
 package com.mpd.pmdm.fragmentintro
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
+import androidx.fragment.app.Fragment
+import com.mpd.pmdm.fragmentintro.databinding.FragmentCounterBinding
 
 /**
  * A simple [Fragment] subclass.
  */
 class CounterFragment : Fragment() {
+    private var _binding: FragmentCounterBinding? = null
+
+    //Declaro una propiedad y su getter. Será una versión no nula de la anterior
+    //Para actualizar (set) usaremos _binding. Para leer (get), usaremos binding
+    private val binding get() = _binding!!
     var counter = 0
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_counter, container, false)
+        _binding = FragmentCounterBinding.inflate(inflater, container, false)
+        val view = binding.root
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val counterValue = view.findViewById<TextView>(R.id.counter_value)
-        view.findViewById<Button>(R.id.plus)
-            .setOnClickListener {
-                counter++
-                counterValue.text = counter.toString()
+        binding.plus.setOnClickListener {
+            counter++
+            binding.counterValue.text = counter.toString()
+        }
+        binding.minus.setOnClickListener {
+            if (counter > 0) {
+                counter--
+                binding.counterValue.text = counter.toString()
             }
-        view.findViewById<Button>(R.id.minus)
-            .setOnClickListener {
-                if (counter > 0) {
-                    counter--
-                    counterValue.text = counter.toString()
-                }
-            }
+        }
     }
 }
